@@ -8,6 +8,7 @@ package com.krest.flink.chapter12;
  * Created by  wushengran
  */
 
+import com.krest.flink.chapter12.vo.LoginEvent;
 import org.apache.flink.api.common.functions.RichFlatMapFunction;
 import org.apache.flink.api.common.state.ValueState;
 import org.apache.flink.api.common.state.ValueStateDescriptor;
@@ -21,7 +22,10 @@ import java.io.Serializable;
 
 import static org.apache.flink.util.Preconditions.checkNotNull;
 
-public class NFAExample {
+/**
+ * 状态机模式匹配
+ */
+public class Demo03_NFAExample {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);

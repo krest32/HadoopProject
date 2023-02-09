@@ -1,4 +1,4 @@
-package com.krest.flink.chapter12;
+package com.krest.flink.chapter12.vo;
 
 /**
  * Copyright (c) 2020-2030 尚硅谷 All Rights Reserved
@@ -8,26 +8,27 @@ package com.krest.flink.chapter12;
  * Created by  wushengran
  */
 
-public class LoginEvent {
+public class OrderEvent {
     public String userId;
-    public String ipAddress;
+    public String orderId;
     public String eventType;
     public Long timestamp;
 
-    public LoginEvent(String userId, String ipAddress, String eventType, Long timestamp) {
+    public OrderEvent() {
+    }
+
+    public OrderEvent(String userId, String orderId, String eventType, Long timestamp) {
         this.userId = userId;
-        this.ipAddress = ipAddress;
+        this.orderId = orderId;
         this.eventType = eventType;
         this.timestamp = timestamp;
     }
 
-    public LoginEvent() {}
-
     @Override
     public String toString() {
-        return "LoginEvent{" +
+        return "OrderEvent{" +
                 "userId='" + userId + '\'' +
-                ", ipAddress='" + ipAddress + '\'' +
+                "orderId='" + orderId + '\'' +
                 ", eventType='" + eventType + '\'' +
                 ", timestamp=" + timestamp +
                 '}';

@@ -18,7 +18,7 @@ import static org.apache.flink.table.api.Expressions.$;
  * Created by  wushengran
  */
 
-public class CommonApiTest {
+public class Demo02_CommonApiTest {
     public static void main(String[] args) throws Exception{
 //        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 //        env.setParallelism(1);
@@ -51,8 +51,8 @@ public class CommonApiTest {
 //                .inBatchMode()
 //                .useBlinkPlanner()
 //                .build();
-//
-//        TableEnvironment tableEnv3 = TableEnvironment.create(settings);
+
+        TableEnvironment tableEnv3 = TableEnvironment.create(settings);
 
         // 2. 创建表
         String createDDL = "CREATE TABLE clickTable (" +
@@ -61,7 +61,7 @@ public class CommonApiTest {
                 " ts BIGINT " +
                 ") WITH (" +
                 " 'connector' = 'filesystem', " +
-                " 'path' = 'input/clicks.csv', " +
+                " 'path' = 'data/input/clicks.csv', " +
                 " 'format' =  'csv' " +
                 ")";
 

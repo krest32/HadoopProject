@@ -8,6 +8,7 @@ package com.krest.flink.chapter12;
  * Created by  wushengran
  */
 
+import com.krest.flink.chapter12.vo.LoginEvent;
 import org.apache.flink.api.common.eventtime.SerializableTimestampAssigner;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.cep.CEP;
@@ -22,7 +23,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
-public class LoginFailDetectExample {
+public class Demo01_LoginFailDetectExample {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);

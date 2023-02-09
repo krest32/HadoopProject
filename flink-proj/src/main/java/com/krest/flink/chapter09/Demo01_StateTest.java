@@ -1,4 +1,4 @@
-package com.krest.flink.chatper09;
+package com.krest.flink.chapter09;
 
 import com.krest.flink.chapter05.ClickSource;
 import com.krest.flink.chapter05.Event;
@@ -23,7 +23,7 @@ import org.apache.flink.util.Collector;
  * Created by  wushengran
  */
 
-public class StateTest {
+public class Demo01_StateTest {
     public static void main(String[] args) throws Exception{
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
@@ -101,7 +101,9 @@ public class StateTest {
 
             // 配置状态的TTL
             StateTtlConfig ttlConfig = StateTtlConfig.newBuilder(Time.hours(1))
+                    // 设置更新失效时间的操作类型
                     .setUpdateType(StateTtlConfig.UpdateType.OnReadAndWrite)
+                    // 设置失效后是否可见
                     .setStateVisibility(StateTtlConfig.StateVisibility.ReturnExpiredIfNotCleanedUp)
                     .build();
 

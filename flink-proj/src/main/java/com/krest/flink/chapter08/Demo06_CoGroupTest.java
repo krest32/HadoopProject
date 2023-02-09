@@ -19,8 +19,10 @@ import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindo
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.util.Collector;
 
-// 基于窗口的join
-public class CoGroupTest {
+/**
+ * 窗口同组链接，类似窗口Join操作
+ */
+public class Demo06_CoGroupTest {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
@@ -65,10 +67,8 @@ public class CoGroupTest {
                                 )
                 );
 
-        stream1
-                .coGroup(stream2)
-                .where(r -> r.f0)
-                .equalTo(r -> r.f0)
+        stream1.coGroup(stream2)
+                .where(r -> r.f0).equalTo(r -> r.f0)
                 .window(TumblingEventTimeWindows.of(Time.seconds(5)))
                 .apply(new CoGroupFunction<Tuple2<String, Long>, Tuple2<String, Long>, String>() {
                     @Override

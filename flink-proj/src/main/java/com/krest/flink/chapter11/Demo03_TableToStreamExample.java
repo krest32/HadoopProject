@@ -7,8 +7,6 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
-import static org.apache.flink.table.api.Expressions.$;
-
 /**
  * Copyright (c) 2020-2030 尚硅谷 All Rights Reserved
  * <p>
@@ -17,13 +15,13 @@ import static org.apache.flink.table.api.Expressions.$;
  * Created by  wushengran
  */
 
-public class SimpleTableExample {
+public class Demo03_TableToStreamExample {
     public static void main(String[] args) throws Exception {
-        // 获取流执行环境
+        // 获取流环境
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
 
-        // 1. 读取数据源
+        // 读取数据源
         SingleOutputStreamOperator<Event> eventStream = env
                 .fromElements(
                         new Event("Alice", "./home", 1000L),
@@ -34,22 +32,22 @@ public class SimpleTableExample {
                         new Event("Alice", "./prod?id=7", 105 * 1000L)
                 );
 
-        // 2. 获取表环境
+        // 获取表环境
         StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
 
-        // 3. 将数据流转换成表
-        Table eventTable = tableEnv.fromDataStream(eventStream);
+        // 将数据流转换成表
+        tableEnv.createTemporaryView("EventTable", eventStream);
 
-        // 4. 用执行SQL 的方式提取数据
-        Table resultTable1 = tableEnv.sqlQuery("select url, user from " + eventTable);
 
-        // 5. 基于Table直接转换
-        Table resultTable2 = eventTable.select($("user"), $("url"))
-                .where($("user").isEqual("Alice"));
+        // 查询Alice的访问url列表
+        Table aliceVisitTable = tableEnv.sqlQuery("SELECT url, user FROM EventTable WHERE user = 'Alice'");
 
-        // 6. 将表转换成数据流，打印输出
-        tableEnv.toDataStream(resultTable1).print("result1");
-        tableEnv.toDataStream(resultTable2).print("result2");
+        // 统计每个用户的点击次数
+        Table urlCountTable = tableEnv.sqlQuery("SELECT user, COUNT(url) FROM EventTable GROUP BY user");
+
+        // 将表转换成数据流，在控制台打印输出
+        tableEnv.toDataStream(aliceVisitTable).print("alice visit");
+        tableEnv.toChangelogStream(urlCountTable).print("count");
 
         // 执行程序
         env.execute();

@@ -1,4 +1,4 @@
-package com.krest.flink.chatper09;
+package com.krest.flink.chapter09;
 
 /**
  * Copyright (c) 2020-2030 尚硅谷 All Rights Reserved
@@ -22,7 +22,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.co.KeyedBroadcastProcessFunction;
 import org.apache.flink.util.Collector;
 
-public class BroadcastStateExample {
+public class Demo08_BroadcastStateExample {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
@@ -45,6 +45,7 @@ public class BroadcastStateExample {
         // 定义广播状态的描述器，创建广播流
         MapStateDescriptor<Void, Pattern> bcStateDescriptor = new MapStateDescriptor<>(
                 "patterns", Types.VOID, Types.POJO(Pattern.class));
+
         BroadcastStream<Pattern> bcPatterns = patternStream.broadcast(bcStateDescriptor);
 
         // 将事件流和广播流连接起来，进行处理
@@ -58,8 +59,7 @@ public class BroadcastStateExample {
         env.execute();
     }
 
-    public static class PatternEvaluator
-            extends KeyedBroadcastProcessFunction<String, Action, Pattern, Tuple2<String, Pattern>> {
+    public static class PatternEvaluator extends KeyedBroadcastProcessFunction<String, Action, Pattern, Tuple2<String, Pattern>> {
 
         // 定义一个值状态，保存上一次用户行为
         ValueState<String> prevActionState;

@@ -8,10 +8,10 @@ package com.krest.flink.chapter12;
  * Created by  wushengran
  */
 
+import com.krest.flink.chapter12.vo.LoginEvent;
 import org.apache.flink.api.common.eventtime.SerializableTimestampAssigner;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.cep.CEP;
-import org.apache.flink.cep.PatternSelectFunction;
 import org.apache.flink.cep.PatternStream;
 import org.apache.flink.cep.functions.PatternProcessFunction;
 import org.apache.flink.cep.pattern.Pattern;
@@ -25,7 +25,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
-public class LoginFailDetectProExample {
+public class Demo02_LoginFailDetectProExample {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
@@ -41,8 +41,10 @@ public class LoginFailDetectProExample {
                         new LoginEvent("user_2", "192.168.1.29", "fail", 8000L),
                         new LoginEvent("user_2", "192.168.1.29", "success", 6000L)
                 )
+                // 设置水位线
                 .assignTimestampsAndWatermarks(
                         WatermarkStrategy.<LoginEvent>forBoundedOutOfOrderness(Duration.ofSeconds(3))
+                                // 提取时间戳
                                 .withTimestampAssigner(
                                         new SerializableTimestampAssigner<LoginEvent>() {
                                             @Override
@@ -50,18 +52,26 @@ public class LoginFailDetectProExample {
                                                 return loginEvent.timestamp;
                                             }
                                         }
-                                )
-                )
+                                ))
+                // 按照 userid 进行分组
                 .keyBy(r -> r.userId);
 
         // 2. 定义Pattern，连续的三个登录失败事件
-        Pattern<LoginEvent, LoginEvent> pattern = Pattern.<LoginEvent>begin("fail")    // 第一个登录失败事件
+        // 第一个登录失败事件的名层
+        Pattern<LoginEvent, LoginEvent> pattern = Pattern
+                // 定义初次失败事件的名称
+                .<LoginEvent>begin("fail")
+                // 判断失败的条件
                 .where(new SimpleCondition<LoginEvent>() {
                     @Override
                     public boolean filter(LoginEvent loginEvent) throws Exception {
                         return loginEvent.eventType.equals("fail");
                     }
-                }).times(3).consecutive();    // 指定是严格紧邻的三次登录失败
+                })
+                // 设置失败事件的次数
+                .times(3)
+                // 指定是严格紧邻的三次登录失败
+                .consecutive();
 
         // 3. 将Pattern应用到流上，检测匹配的复杂事件，得到一个PatternStream
         PatternStream<LoginEvent> patternStream = CEP.pattern(stream, pattern);

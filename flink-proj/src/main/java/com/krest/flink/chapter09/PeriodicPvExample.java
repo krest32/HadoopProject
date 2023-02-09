@@ -1,4 +1,4 @@
-package com.krest.flink.chatper09;
+package com.krest.flink.chapter09;
 
 /**
  * Copyright (c) 2020-2030 尚硅谷 All Rights Reserved

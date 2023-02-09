@@ -18,10 +18,13 @@ import org.apache.flink.streaming.api.functions.co.ProcessJoinFunction;
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.util.Collector;
 
-// 基于间隔的join
-public class IntervalJoinTest {
+/**
+ * 基于间隔的join
+ */
+public class Demo05_IntervalJoinTest {
 
     public static void main(String[] args) throws Exception {
+
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
 
@@ -58,8 +61,9 @@ public class IntervalJoinTest {
                 })
         );
 
-        orderStream.keyBy(data -> data.f0)
-                .intervalJoin(clickStream.keyBy(data -> data.user))
+        // 以某个key的时间为基准，在另一条流上的某个时间窗口内的 join 操作，对于 key进行 一一 配对操作
+        orderStream.keyBy(data -> data.f0).intervalJoin(clickStream.keyBy(data -> data.user))
+                // 设置在另一个流上的时间区间
                 .between(Time.seconds(-5), Time.seconds(10))
                 .process(new ProcessJoinFunction<Tuple3<String, String, Long>, Event, String>() {
                     @Override
@@ -70,5 +74,6 @@ public class IntervalJoinTest {
                 .print();
 
         env.execute();
-    }}
+    }
+}
 

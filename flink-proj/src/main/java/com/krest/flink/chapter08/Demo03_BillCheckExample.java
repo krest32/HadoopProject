@@ -21,18 +21,24 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.co.CoProcessFunction;
 import org.apache.flink.util.Collector;
 
-// 实时对账
-public class BillCheckExample {
+/**
+ * connect 使用案例：实时对账系统
+ * 通过 key 将两条流的信息对应起来
+ */
+public class Demo03_BillCheckExample {
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
 
         // 来自app的支付日志
         SingleOutputStreamOperator<Tuple3<String, String, Long>> appStream = env.fromElements(
                 Tuple3.of("order-1", "app", 1000L),
-                Tuple3.of("order-2", "app", 2000L)
+                Tuple3.of("order-2", "app", 2000L),
+                Tuple3.of("order-3", "app", 3500L)
+                // 顺序流
         ).assignTimestampsAndWatermarks(WatermarkStrategy.<Tuple3<String, String, Long>>forMonotonousTimestamps()
+                // 水位线截取第三个字段
                 .withTimestampAssigner(new SerializableTimestampAssigner<Tuple3<String, String, Long>>() {
                     @Override
                     public long extractTimestamp(Tuple3<String, String, Long> element, long recordTimestamp) {
@@ -45,7 +51,9 @@ public class BillCheckExample {
         SingleOutputStreamOperator<Tuple4<String, String, String, Long>> thirdpartStream = env.fromElements(
                 Tuple4.of("order-1", "third-party", "success", 3000L),
                 Tuple4.of("order-3", "third-party", "success", 4000L)
+                // 顺序流
         ).assignTimestampsAndWatermarks(WatermarkStrategy.<Tuple4<String, String, String, Long>>forMonotonousTimestamps()
+                // 水位线截取第四个字段
                 .withTimestampAssigner(new SerializableTimestampAssigner<Tuple4<String, String, String, Long>>() {
                     @Override
                     public long extractTimestamp(Tuple4<String, String, String, Long> element, long recordTimestamp) {
@@ -56,6 +64,7 @@ public class BillCheckExample {
 
         // 检测同一支付单在两条流中是否匹配，不匹配就报警
         appStream.connect(thirdpartStream)
+                // 获取Key进行分区
                 .keyBy(data -> data.f0, data -> data.f0)
                 .process(new OrderMatchResult())
                 .print();
@@ -64,11 +73,16 @@ public class BillCheckExample {
     }
 
     // 自定义实现CoProcessFunction
-    public static class OrderMatchResult extends CoProcessFunction<Tuple3<String, String, Long>, Tuple4<String, String, String, Long>, String>{
+    public static class OrderMatchResult extends CoProcessFunction<Tuple3<String, String, Long>, Tuple4<String, String, String, Long>, String> {
         // 定义状态变量，用来保存已经到达的事件
         private ValueState<Tuple3<String, String, Long>> appEventState;
         private ValueState<Tuple4<String, String, String, Long>> thirdPartyEventState;
 
+        /**
+         * 或许状态不能直接new，需要从运行时上下文进行获取
+         * @param parameters
+         * @throws Exception
+         */
         @Override
         public void open(Configuration parameters) throws Exception {
             appEventState = getRuntimeContext().getState(
@@ -76,14 +90,14 @@ public class BillCheckExample {
             );
 
             thirdPartyEventState = getRuntimeContext().getState(
-                    new ValueStateDescriptor<Tuple4<String, String, String, Long>>("thirdparty-event", Types.TUPLE(Types.STRING, Types.STRING, Types.STRING,Types.LONG))
+                    new ValueStateDescriptor<Tuple4<String, String, String, Long>>("thirdparty-event", Types.TUPLE(Types.STRING, Types.STRING, Types.STRING, Types.LONG))
             );
         }
 
         @Override
         public void processElement1(Tuple3<String, String, Long> value, Context ctx, Collector<String> out) throws Exception {
             // 看另一条流中事件是否来过
-            if (thirdPartyEventState.value() != null){
+            if (thirdPartyEventState.value() != null) {
                 out.collect("对账成功：" + value + "  " + thirdPartyEventState.value());
                 // 清空状态
                 thirdPartyEventState.clear();
@@ -97,7 +111,7 @@ public class BillCheckExample {
 
         @Override
         public void processElement2(Tuple4<String, String, String, Long> value, Context ctx, Collector<String> out) throws Exception {
-            if (appEventState.value() != null){
+            if (appEventState.value() != null) {
                 out.collect("对账成功：" + appEventState.value() + "  " + value);
                 // 清空状态
                 appEventState.clear();
@@ -109,6 +123,13 @@ public class BillCheckExample {
             }
         }
 
+        /**
+         * 定时器 配置，超过时间自动提升
+         * @param timestamp
+         * @param ctx
+         * @param out
+         * @throws Exception
+         */
         @Override
         public void onTimer(long timestamp, OnTimerContext ctx, Collector<String> out) throws Exception {
             // 定时器触发，判断状态，如果某个状态不为空，说明另一条流中事件没来
@@ -121,5 +142,6 @@ public class BillCheckExample {
             appEventState.clear();
             thirdPartyEventState.clear();
         }
-    }}
+    }
+}
 

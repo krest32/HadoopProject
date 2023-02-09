@@ -18,11 +18,11 @@ import org.apache.flink.util.Collector;
 
 import java.time.Duration;
 
-public class UnionTest {
+public class Demo01_UnionTest {
     public static void main(String[] args) throws Exception {
+
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
-
 
 
         SingleOutputStreamOperator<Event> stream1 = env.socketTextStream("hadoop102", 7777)
@@ -56,7 +56,7 @@ public class UnionTest {
 
         stream2.print("stream2");
 
-        // 合并两条流
+        // 合并两条流，水位线会以分区最小的为准，两条流的数据类型需要相同
         stream1.union(stream2)
                 .process(new ProcessFunction<Event, String>() {
                     @Override

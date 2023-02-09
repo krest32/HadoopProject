@@ -8,12 +8,11 @@ package com.krest.flink.chapter12;
  * Created by  wushengran
  */
 
+import com.krest.flink.chapter12.vo.OrderEvent;
 import org.apache.flink.api.common.eventtime.SerializableTimestampAssigner;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.cep.CEP;
-import org.apache.flink.cep.PatternSelectFunction;
 import org.apache.flink.cep.PatternStream;
-import org.apache.flink.cep.PatternTimeoutFunction;
 import org.apache.flink.cep.functions.PatternProcessFunction;
 import org.apache.flink.cep.functions.TimedOutPartialMatchHandler;
 import org.apache.flink.cep.pattern.Pattern;
