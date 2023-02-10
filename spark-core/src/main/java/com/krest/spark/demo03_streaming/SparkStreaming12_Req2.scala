@@ -21,6 +21,7 @@ object SparkStreaming12_Req2 {
             ConsumerConfig.GROUP_ID_CONFIG -> "atguigu",
             "key.deserializer" -> "org.apache.kafka.common.serialization.StringDeserializer",
             "value.deserializer" -> "org.apache.kafka.common.serialization.StringDeserializer"
+
         )
 
         val kafkaDataDS: InputDStream[ConsumerRecord[String, String]] = KafkaUtils.createDirectStream[String, String](
