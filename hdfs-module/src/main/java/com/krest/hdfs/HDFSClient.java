@@ -14,22 +14,22 @@ import java.net.URISyntaxException;
 public class HDFSClient {
     private FileSystem fs;
 
-//    @Before
-//    public void init() throws URISyntaxException, IOException, InterruptedException {
-//        URI uri = new URI("hdfs://hadoop100:8020");
-//        Configuration config = new Configuration();
-//        String user = "root";
-//        fs = FileSystem.get(uri, config, user);
-//
-//    }
-//
-//    @After
-//    public void close() throws IOException {
-//        fs.close();
-//    }
-//
-//    @Test
-//    public void mkdir() throws IOException {
-//        fs.mkdirs(new Path("sanguo/huaguoshan"));
-//    }
+    @Before
+    public void init() throws URISyntaxException, IOException, InterruptedException {
+        URI uri = new URI("hdfs://hadoop100:8020");
+        Configuration config = new Configuration();
+        String user = "root";
+        fs = FileSystem.get(uri, config, user);
+
+    }
+
+    @After
+    public void close() throws IOException {
+        fs.close();
+    }
+
+    @Test
+    public void mkdir() throws IOException {
+        fs.mkdirs(new Path("sanguo/huaguoshan"));
+    }
 }
