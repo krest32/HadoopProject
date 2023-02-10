@@ -19,6 +19,8 @@ out/
 localbin
 nohup.out
 
+data/outout
+data/input
 
 .svn
 .classpath
