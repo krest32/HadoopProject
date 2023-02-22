@@ -11,10 +11,69 @@
     <modules>
         <module>hdfs-module</module>
         <module>spark-core</module>
-        <module>scala-proj</module>
+        <module>scala-base</module>
         <module>spark-streaming</module>
         <module>flink-proj</module>
+        <module>flume-interceptor</module>
+        <module>sprak-recommend</module>
+        <module>hive-sql</module>
     </modules>
+    <properties>
+        <log4j.version>1.2.17</log4j.version>
+        <slf4j.version>1.7.22</slf4j.version>
+        <mongodb-spark.version>2.4.1</mongodb-spark.version>
+        <casbah.version>3.1.1</casbah.version>
+        <redis.version>2.9.0</redis.version>
+        <kafka.version>0.10.2.1</kafka.version>
+        <spark.version>3.1.2</spark.version>
+        <scala.version>2.12.11</scala.version>
+        <scala-compat-version>2.12</scala-compat-version>
+        <jblas.version>1.2.1</jblas.version>
+    </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <!-- 引入Spark相关的Jar包 -->
+            <dependency>
+                <groupId>org.apache.spark</groupId>
+                <artifactId>spark-core_${scala-compat-version}</artifactId>
+                <version>${spark.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.spark</groupId>
+                <artifactId>spark-sql_${scala-compat-version}</artifactId>
+                <version>${spark.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.spark</groupId>
+                <artifactId>spark-streaming_${scala-compat-version}</artifactId>
+                <version>${spark.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.spark</groupId>
+                <artifactId>spark-mllib_${scala-compat-version}</artifactId>
+                <version>${spark.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.spark</groupId>
+                <artifactId>spark-graphx_${scala-compat-version}</artifactId>
+                <version>${spark.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.scala-lang</groupId>
+                <artifactId>scala-library</artifactId>
+                <version>${scala.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
+    <build>
+        <plugins>
+            <!-- 父项目已声明该plugin，子项目在引入的时候，不用声明版本和已经声明的配置 -->
+            <plugin>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>scala-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>
