@@ -1,13 +1,8 @@
 package com.krest.flink.chapter06;
 
 /**
- * Copyright (c) 2020-2030 尚硅谷 All Rights Reserved
- * <p>
- * Project:  FlinkTutorial
- * <p>
- * Created by  wushengran
+ * 自定义水位线策略
  */
-
 
 
 import com.krest.flink.chapter05.ClickSource;
@@ -15,14 +10,12 @@ import com.krest.flink.chapter05.Event;
 import org.apache.flink.api.common.eventtime.*;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
-// 自定义水位线的产生
-public class CustomWatermarkTest {
+public class Demo02_CustomWatermarkTest {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
 
-        env
-                .addSource(new ClickSource())
+        env.addSource(new ClickSource())
                 .assignTimestampsAndWatermarks(new CustomWatermarkStrategy())
                 .print();
 

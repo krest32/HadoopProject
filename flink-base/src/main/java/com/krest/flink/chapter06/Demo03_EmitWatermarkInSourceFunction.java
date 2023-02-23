@@ -1,11 +1,7 @@
 package com.krest.flink.chapter06;
 
 /**
- * Copyright (c) 2020-2030 尚硅谷 All Rights Reserved
- * <p>
- * Project:  FlinkTutorial
- * <p>
- * Created by  wushengran
+ * 在自定义数据源中发送水位线
  */
 
 import com.krest.flink.chapter05.ClickSource;
@@ -18,7 +14,7 @@ import org.apache.flink.streaming.api.watermark.Watermark;
 import java.util.Calendar;
 import java.util.Random;
 
-public class EmitWatermarkInSourceFunction {
+public class Demo03_EmitWatermarkInSourceFunction {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
@@ -31,15 +27,16 @@ public class EmitWatermarkInSourceFunction {
     // 泛型是数据源中的类型
     public static class ClickSourceWithWatermark implements SourceFunction<Event> {
         private boolean running = true;
+
         @Override
         public void run(SourceContext<Event> sourceContext) throws Exception {
             Random random = new Random();
             String[] userArr = {"Mary", "Bob", "Alice"};
-            String[] urlArr  = {"./home", "./cart", "./prod?id=1"};
+            String[] urlArr = {"./home", "./cart", "./prod?id=1"};
             while (running) {
                 long currTs = Calendar.getInstance().getTimeInMillis(); // 毫秒时间戳
                 String username = userArr[random.nextInt(userArr.length)];
-                String url      = urlArr[random.nextInt(urlArr.length)];
+                String url = urlArr[random.nextInt(urlArr.length)];
                 Event event = new Event(username, url, currTs);
                 // 使用collectWithTimestamp方法将数据发送出去，并指明数据中的时间戳的字段
                 sourceContext.collectWithTimestamp(event, event.timestamp);

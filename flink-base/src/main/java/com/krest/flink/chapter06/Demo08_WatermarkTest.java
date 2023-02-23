@@ -1,11 +1,7 @@
 package com.krest.flink.chapter06;
 
 /**
- * Copyright (c) 2020-2030 尚硅谷 All Rights Reserved
- * <p>
- * Project:  FlinkTutorial
- * <p>
- * Created by  wushengran
+ * Flink 内置水位线生成器
  */
 
 import com.krest.flink.chapter05.ClickSource;
@@ -23,8 +19,7 @@ import org.apache.flink.util.Collector;
 import java.time.Duration;
 
 
-
-public class WatermarkTest {
+public class Demo08_WatermarkTest {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
@@ -60,7 +55,7 @@ public class WatermarkTest {
     }
 
     // 自定义处理窗口函数，输出当前的水位线和窗口信息
-    public static class WatermarkTestResult extends ProcessWindowFunction<Event, String, String, TimeWindow>{
+    public static class WatermarkTestResult extends ProcessWindowFunction<Event, String, String, TimeWindow> {
         @Override
         public void process(String s, Context context, Iterable<Event> elements, Collector<String> out) throws Exception {
             Long start = context.window().getStart();

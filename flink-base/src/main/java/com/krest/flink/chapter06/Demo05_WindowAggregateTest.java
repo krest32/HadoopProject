@@ -1,12 +1,5 @@
 package com.krest.flink.chapter06;
 
-/**
- * Copyright (c) 2020-2030 尚硅谷 All Rights Reserved
- * <p>
- * Project:  FlinkTutorial
- * <p>
- * Created by  wushengran
- */
 
 import com.krest.flink.chapter05.ClickSource;
 import com.krest.flink.chapter05.Event;
@@ -22,15 +15,16 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 
 import java.util.HashSet;
 
-public class WindowAggregateTest {
+public class Demo05_WindowAggregateTest {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
 
 
-
         SingleOutputStreamOperator<Event> stream = env.addSource(new ClickSource())
+                // // 插入水位线的逻辑
                 .assignTimestampsAndWatermarks(WatermarkStrategy.<Event>forMonotonousTimestamps()
+
                         .withTimestampAssigner(new SerializableTimestampAssigner<Event>() {
                             @Override
                             public long extractTimestamp(Event element, long recordTimestamp) {

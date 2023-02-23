@@ -29,7 +29,7 @@ import org.apache.flink.util.OutputTag;
 import java.time.Duration;
 
 
-public class ProcessLateDataExample {
+public class Demo10_ProcessLateDataExample {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);

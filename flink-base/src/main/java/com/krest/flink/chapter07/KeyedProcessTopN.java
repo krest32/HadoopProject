@@ -7,6 +7,7 @@ package com.krest.flink.chapter07;
  * <p>
  * Created by  wushengran
  */
+
 import com.krest.flink.chapter05.ClickSource;
 import com.krest.flink.chapter05.Event;
 import com.krest.flink.chapter06.UrlViewCount;
@@ -98,7 +99,7 @@ public class KeyedProcessTopN {
     }
 
     // 自定义处理函数，排序取top n
-    public static class TopN extends KeyedProcessFunction<Long, UrlViewCount, String>{
+    public static class TopN extends KeyedProcessFunction<Long, UrlViewCount, String> {
         // 将n作为属性
         private Integer n;
         // 定义一个列表状态

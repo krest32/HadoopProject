@@ -22,7 +22,7 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 
 import java.time.Duration;
 
-public class WindowReduceTest {
+public class Demo04_WindowReduceTest {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
@@ -36,7 +36,9 @@ public class WindowReduceTest {
                             public long extractTimestamp(Event element, long recordTimestamp) {
                                 return element.timestamp;
                             }
-                        }));          stream.map(new MapFunction<Event, Tuple2<String, Long>>() {
+                        }));
+        stream.map(
+                new MapFunction<Event, Tuple2<String, Long>>() {
                     @Override
                     public Tuple2<String, Long> map(Event value) throws Exception {
                         // 将数据转换成二元组，方便计算

@@ -26,9 +26,9 @@ import java.time.Duration;
 import java.util.HashSet;
 
 
-
-public class UvCountByWindowExample {
+public class Demo06_UvCountByWindowExample {
     public static void main(String[] args) throws Exception {
+
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
 
@@ -51,12 +51,12 @@ public class UvCountByWindowExample {
     }
 
     // 自定义窗口处理函数
-    public static class UvCountByWindow extends ProcessWindowFunction<Event, String, Boolean, TimeWindow>{
+    public static class UvCountByWindow extends ProcessWindowFunction<Event, String, Boolean, TimeWindow> {
         @Override
         public void process(Boolean aBoolean, Context context, Iterable<Event> elements, Collector<String> out) throws Exception {
             HashSet<String> userSet = new HashSet<>();
             // 遍历所有数据，放到Set里去重
-            for (Event event: elements){
+            for (Event event : elements) {
                 userSet.add(event.user);
             }
             // 结合窗口信息，包装输出内容
