@@ -14,9 +14,9 @@ import org.apache.flink.streaming.api.functions.source.ParallelSourceFunction;
 import java.util.Random;
 
 public class SourceCustomParallelTest {
+
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-
         env.addSource(new CustomSource()).setParallelism(2).print();
 
         env.execute();
@@ -32,7 +32,6 @@ public class SourceCustomParallelTest {
                 sourceContext.collect(random.nextInt());
             }
         }
-
         @Override
         public void cancel() {
             running = false;

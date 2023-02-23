@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * Created by  wushengran
  */
 
-public class SourceTest {
+public class Demo01_SourceTest {
     public static void main(String[] args) throws Exception{
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);

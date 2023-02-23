@@ -13,7 +13,7 @@
         <module>spark-core</module>
         <module>scala-base</module>
         <module>spark-streaming</module>
-        <module>flink-proj</module>
+        <module>flink-base</module>
         <module>flume-interceptor</module>
         <module>sprak-recommend</module>
         <module>hive-sql</module>
@@ -73,6 +73,7 @@
             <plugin>
                 <groupId>net.alchim31.maven</groupId>
                 <artifactId>scala-maven-plugin</artifactId>
+                <version>3.2.2</version>
             </plugin>
         </plugins>
     </build>

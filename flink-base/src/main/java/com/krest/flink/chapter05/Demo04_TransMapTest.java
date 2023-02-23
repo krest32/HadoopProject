@@ -12,8 +12,8 @@ import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
-public class TransMapTest {
-    public static void main(String[] args) throws Exception{
+public class Demo04_TransMapTest {
+    public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
 
@@ -35,6 +35,7 @@ public class TransMapTest {
 
         env.execute();
     }
+
     public static class UserExtractor implements MapFunction<Event, String> {
         @Override
         public String map(Event e) throws Exception {

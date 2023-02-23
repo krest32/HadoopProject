@@ -8,13 +8,14 @@ package com.krest.flink.chapter05;
  * Created by  wushengran
  */
 
-import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.connector.jdbc.JdbcConnectionOptions;
-import org.apache.flink.connector.jdbc.JdbcExecutionOptions;
 import org.apache.flink.connector.jdbc.JdbcSink;
+import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
-public class SinkToMySQL {
+import java.awt.*;
+
+public class Demo17_SinkToMySQL {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);

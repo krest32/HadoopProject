@@ -14,7 +14,7 @@ import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
 
-public class TransFlatmapTest {
+public class Demo06_TransFlatmapTest {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
@@ -28,6 +28,7 @@ public class TransFlatmapTest {
 
         env.execute();
     }
+
     public static class MyFlatMap implements FlatMapFunction<Event, String> {
         @Override
         public void flatMap(Event value, Collector<String> out) throws Exception {

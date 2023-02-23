@@ -14,11 +14,16 @@ import java.util.Calendar;
 import java.util.Random;
 
 public class ClickSource implements SourceFunction<Event> {
-    // 声明一个布尔变量，作为控制数据生成的标识位
+
+    /**
+     * 声明一个布尔变量，作为控制数据生成的标识位
+     */
     private Boolean running = true;
+
     @Override
     public void run(SourceContext<Event> ctx) throws Exception {
-        Random random = new Random();    // 在指定的数据集中随机选取数据
+        // 在指定的数据集中随机选取数据
+        Random random = new Random();
         String[] users = {"Mary", "Alice", "Bob", "Cary"};
         String[] urls = {"./home", "./cart", "./fav", "./prod?id=1", "./prod?id=2"};
 
@@ -32,6 +37,7 @@ public class ClickSource implements SourceFunction<Event> {
             Thread.sleep(1000);
         }
     }
+
     @Override
     public void cancel() {
         running = false;

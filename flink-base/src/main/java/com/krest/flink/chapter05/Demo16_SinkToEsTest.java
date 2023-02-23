@@ -21,7 +21,7 @@ import org.elasticsearch.client.Requests;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class SinkToEsTest {
+public class Demo16_SinkToEsTest {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);

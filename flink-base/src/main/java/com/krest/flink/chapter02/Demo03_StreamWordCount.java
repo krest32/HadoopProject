@@ -1,11 +1,7 @@
 package com.krest.flink.chapter02;
 
 /**
- * Copyright (c) 2020-2030 尚硅谷 All Rights Reserved
- * <p>
- * Project:  FlinkTutorial
- * <p>
- * Created by  wushengran
+ * 实时流处理
  */
 
 import org.apache.flink.api.common.typeinfo.Types;
@@ -18,7 +14,7 @@ import org.apache.flink.util.Collector;
 
 import java.util.Arrays;
 
-public class StreamWordCount {
+public class Demo03_StreamWordCount {
     public static void main(String[] args) throws Exception {
         // 1. 创建流式执行环境
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();

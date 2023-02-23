@@ -1,11 +1,7 @@
 package com.krest.flink.chapter02;
 
 /**
- * Copyright (c) 2020-2030 尚硅谷 All Rights Reserved
- * <p>
- * Project:  FlinkTutorial
- * <p>
- * Created by  wushengran
+ * 有界流读取文件
  */
 
 import org.apache.flink.api.common.typeinfo.Types;
@@ -18,7 +14,7 @@ import org.apache.flink.util.Collector;
 
 import java.util.Arrays;
 
-public class BoundedStreamWordCount {
+public class Demo02_BoundedStreamWordCount {
     public static void main(String[] args) throws Exception {
         // 1. 创建流式执行环境
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();

@@ -1,12 +1,5 @@
 package com.krest.flink.chapter05;
 
-/**
- * Copyright (c) 2020-2030 尚硅谷 All Rights Reserved
- * <p>
- * Project:  FlinkTutorial
- * <p>
- * Created by  wushengran
- */
 
 import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -14,7 +7,8 @@ import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
-public class TransUdfTest {
+public class Demo10_TransUdfTest {
+
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
@@ -59,7 +53,9 @@ public class TransUdfTest {
     public static class KeyWordFilter implements FilterFunction<Event> {
         private String keyWord;
 
-        KeyWordFilter(String keyWord) { this.keyWord = keyWord; }
+        KeyWordFilter(String keyWord) {
+            this.keyWord = keyWord;
+        }
 
         @Override
         public boolean filter(Event value) throws Exception {

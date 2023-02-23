@@ -1,11 +1,7 @@
 package com.krest.flink.chapter02;
 
 /**
- * Copyright (c) 2020-2030 尚硅谷 All Rights Reserved
- * <p>
- * Project:  FlinkTutorial
- * <p>
- * Created by  wushengran
+ * 批处理
  */
 
 import org.apache.flink.api.common.typeinfo.Types;
@@ -17,7 +13,7 @@ import org.apache.flink.api.java.operators.UnsortedGrouping;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.util.Collector;
 
-public class BatchWordCount {
+public class Demo01_BatchWordCount {
     public static void main(String[] args) throws Exception {
         // 1. 创建执行环境
         ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
@@ -31,7 +27,8 @@ public class BatchWordCount {
                         out.collect(Tuple2.of(word, 1L));
                     }
                 })
-                .returns(Types.TUPLE(Types.STRING, Types.LONG));  //当Lambda表达式使用 Java 泛型的时候, 由于泛型擦除的存在, 需要显示的声明类型信息
+                //当Lambda表达式使用 Java 泛型的时候, 由于泛型擦除的存在, 需要显示的声明类型信息
+                .returns(Types.TUPLE(Types.STRING, Types.LONG));
 
         // 4. 按照 word 进行分组
         UnsortedGrouping<Tuple2<String, Long>> wordAndOneUG = wordAndOne.groupBy(0);
