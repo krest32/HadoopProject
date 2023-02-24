@@ -17,6 +17,8 @@
         <module>flume-interceptor</module>
         <module>sprak-recommend</module>
         <module>hive-sql</module>
+        <module>hbase-base</module>
+        <module>hbase-Phoenix</module>
     </modules>
     <properties>
         <log4j.version>1.2.17</log4j.version>
