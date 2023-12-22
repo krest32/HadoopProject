@@ -46,8 +46,8 @@ case class MongoConfig(uri: String, db: String)
 
 object DataLoader {
   // 定义数据文件路径
-  val PRODUCT_DATA_PATH = "C:\\Krest WorkSpace\\大数据\\尚硅谷大数据项目之电商推荐系统\\3.代码\\ECommerceRecommendSystem\\recommender\\DataLoader\\src\\main\\resources\\products.csv"
-  val RATING_DATA_PATH = "C:\\Krest WorkSpace\\大数据\\尚硅谷大数据项目之电商推荐系统\\3.代码\\ECommerceRecommendSystem\\recommender\\DataLoader\\src\\main\\resources\\ratings.csv"
+  val PRODUCT_DATA_PATH = "C:\\Krest WorkSpace\\Own Code\\HadoopProject\\sprak-recommend\\src\\main\\resources\\products.csv"
+  val RATING_DATA_PATH = "C:\\Krest WorkSpace\\Own Code\\HadoopProject\\sprak-recommend\\src\\main\\resources\\ratings.csv"
   // 定义mongodb中存储的表名
   val MONGODB_PRODUCT_COLLECTION = "Product"
   val MONGODB_RATING_COLLECTION = "Rating"
@@ -55,7 +55,7 @@ object DataLoader {
   def main(args: Array[String]): Unit = {
     val config = Map(
       "spark.cores" -> "local[*]",
-      "mongo.uri" -> "mongodb://192.168.160.139:27017/recommender",
+      "mongo.uri" -> "mongodb://121.196.111.229:27017/recommender",
       "mongo.db" -> "recommender"
     )
 
